@@ -178,7 +178,7 @@ class QuickwitClient:
         response = self._make_request('GET', f'/indexes/{index_id}/describe')
         return response.json()
 
-    def create_log_index(self, app_name: str, index_config:Dict = None) -> bool:
+    def create_log_index(self, app_name: str, index_config: Dict = None) -> bool:
         """
         Create a log index for a Django app.
         
@@ -191,15 +191,18 @@ class QuickwitClient:
         """
         index_id = f"{self.config.get("index_prefix")}_{app_name}"
         # Check if index already exists
-        if self.get_index_stats(index_id):
-            logger.info(f"Index {index_id} already exists")
-            return True
+        try:
+            if self.get_index_stats(index_id):
+                logger.info(f"Index {index_id} already exists")
+                return True
+        except QuickwitIndexError:
+            if not index_config:
+                index_config = default_index_config
 
-        if not index_config:
-            index_config = default_index_config
-
-        index_config["index_id"] = index_id
-        return self.create_index(index_config)
+            index_config["index_id"] = index_id
+            return self.create_index(index_config)
+        except Exception:
+            raise
 
     def index_documents(self, index_id: str, documents: List[Dict[str, Any]], commit: str = 'auto') -> bool:
         """
