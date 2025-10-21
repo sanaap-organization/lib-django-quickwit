@@ -224,6 +224,14 @@ logger.error(
     user_id="123"
 )
 
+# You can pass a new app name in structlog logger too
+logger.error(
+    "Critical error",
+    send_to_quickwit=True,  # Add this flag
+    user_id="123",
+    app_name="new_app_name" # Add new app name for using another index
+)
+
 # This doesn't go to Quickwit
 logger.info("Regular info message")
 ```

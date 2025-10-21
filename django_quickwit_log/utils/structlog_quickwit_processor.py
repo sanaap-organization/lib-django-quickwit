@@ -37,13 +37,14 @@ class QuickwitProcessor:
 
         if send_to_quickwit and self.config.get('enable_quickwit_indexing', True):
             try:
-                self.quickwit_client.create_log_index(self.app_name)
-
                 quickwit_data = event_dict.copy()
-                if 'app_name' not in quickwit_data:
-                    quickwit_data['app_name'] = self.app_name
+                app_name = quickwit_data.get("app_name") or self.app_name
+                self.quickwit_client.create_log_index(app_name)
 
-                index_id = f"{self.config.get("index_prefix")}_{self.app_name}"
+                if 'app_name' not in quickwit_data:
+                    quickwit_data['app_name'] = app_name
+
+                index_id = f"{self.config.get("index_prefix")}_{app_name}"
                 self.quickwit_client.index_document(index_id, quickwit_data, commit='force')
 
             except Exception as e:
