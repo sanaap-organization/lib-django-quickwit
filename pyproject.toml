@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=75.7.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-quickwit-log"
+version = "0.1.2"
+authors = [
+    {name = "Sanaap Organization"}
+]
+description = "A Django package for integrating Quickwit with JSON log management and MinIO storage"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+dependencies = [
+    "Django>=3.2",
+    "requests>=2.28.0",
+    "minio>=7.1.0",
+    "setuptools>=75.7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/sanaap-organization/lib-django-quickwit"
+Repository = "https://github.com/sanaap-organization/lib-django-quickwit"
+Issues = "https://github.com/sanaap-organization/lib-django-quickwit/issues"
+
+[project.scripts]
+django-quickwit-manage = "django_quickwit_log.management:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["django_quickwit_log*"]
+
+[tool.setuptools.package-data]
+django_quickwit_log = [
+    "docker/*",
+    "templates/*",
+    "static/*",
+]
+
+[tool.setuptools.exclude-package-data]
+"*" = [
+    "*.pyc",
+    "__pycache__",
+    ".git*",
+    ".DS_Store",
+]

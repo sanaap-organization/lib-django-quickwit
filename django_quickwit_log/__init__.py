@@ -5,7 +5,7 @@ A Django package for integrating Quickwit with JSON log management and MinIO sto
 """
 
 __version__ = "0.1.2"
-__author__ = "Shaghayegh Ghorbanpoor"
-__email__ = "ghorbanpoor.shaghayegh@gmail.com"
+__author__ = "Sanaap Organization"
+__email__ = ""
 
 default_app_config = 'django_quickwit_log.apps.DjangoQuickwitLogConfig'
