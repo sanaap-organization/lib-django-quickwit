@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  quickwit:
+    image: quickwit/quickwit:latest
+    container_name: quickwit-server
+    ports:
+      - "7280:7280"
+    environment:
+      - QW_CONFIG=./config/quickwit.yaml
+    volumes:
+      - quickwit_data:/quickwit/data
+      - ./config:/quickwit/config
+    command: ["run"]
+    networks:
+      - quickwit-network
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio-storage
+    ports:
+      - "9002:9000"
+      - "9003:9001"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - quickwit-network
+
+volumes:
+  quickwit_data:
+    driver: local
+  minio_data:
+    driver: local
+
+networks:
+  quickwit-network:
+    driver: bridge
